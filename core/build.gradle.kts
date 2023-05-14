@@ -20,12 +20,6 @@ sourceSets.main.configure {
 }
 
 
-val gwtCompatPath = "io/github/fourlastor/gwtCompat"
-idea.module { excludeDirs.add(file("src/main/java/$gwtCompatPath")) }
-listOf(tasks.compileJava, tasks.compileTestJava, tasks.javadoc).forEach {
-    it.configure { exclude(gwtCompatPath) }
-}
-
 spotless {
     isEnforceCheck = false
     java {
@@ -52,12 +46,6 @@ tasks.compileJava.configure {
 }
 
 dependencies {
-    implementation(libs.harlequin)
-    implementation(libs.perceptual)
     implementation(libs.gdx.core)
-    implementation(libs.gdx.ai)
-    implementation(libs.textratypist)
-    implementation(libs.dagger.core)
-    api(libs.dagger.gwt)
-    annotationProcessor(libs.dagger.compiler)
+    implementation(libs.gdx.box2d.core)
 }

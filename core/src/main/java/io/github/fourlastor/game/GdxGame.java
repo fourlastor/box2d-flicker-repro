@@ -1,37 +1,23 @@
 package io.github.fourlastor.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import io.github.fourlastor.game.di.GameComponent;
-import io.github.fourlastor.game.intro.IntroComponent;
-import io.github.fourlastor.game.level.di.LevelComponent;
-import io.github.fourlastor.game.route.Router;
-import io.github.fourlastor.game.route.RouterModule;
+import io.github.fourlastor.game.level.LevelScreen;
 
-public class GdxGame extends Game implements Router {
-
-    private final InputMultiplexer multiplexer;
-
-    private final LevelComponent.Builder levelScreenFactory;
-    private final IntroComponent.Builder introScreenFactory;
+public class GdxGame extends Game {
 
     private Screen pendingScreen = null;
 
-    public GdxGame(
-            InputMultiplexer multiplexer,
-            LevelComponent.Builder levelScreenFactory,
-            IntroComponent.Builder introScreenFactory) {
-        this.multiplexer = multiplexer;
-        this.levelScreenFactory = levelScreenFactory;
-        this.introScreenFactory = introScreenFactory;
+    public GdxGame() {
     }
 
     @Override
     public void create() {
-        Gdx.input.setInputProcessor(multiplexer);
-        goToIntro();
+        goToLevel();
+    }
+
+    public void goToLevel() {
+        pendingScreen = new LevelScreen(this);
     }
 
     @Override
@@ -44,18 +30,7 @@ public class GdxGame extends Game implements Router {
     }
 
     public static GdxGame createGame() {
-        return GameComponent.component().game();
+        return new GdxGame();
     }
 
-    @Override
-    public void goToIntro() {
-        pendingScreen =
-                introScreenFactory.router(new RouterModule(this)).build().screen();
-    }
-
-    @Override
-    public void goToLevel() {
-        pendingScreen =
-                levelScreenFactory.router(new RouterModule(this)).build().screen();
-    }
 }

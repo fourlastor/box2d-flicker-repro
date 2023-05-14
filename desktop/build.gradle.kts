@@ -27,6 +27,7 @@ application {
 dependencies {
     implementation(project(":core"))
     nativesDesktop(libs.gdx.platform)
+    nativesDesktop(libs.gdx.box2d.platform)
     implementation(libs.gdx.backend.lwjgl3)
 }
 
