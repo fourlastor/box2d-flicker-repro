@@ -1,42 +1,38 @@
 import com.badlogic.gdx.tools.texturepacker.TexturePacker
 
-@Suppress(
-    // known false positive: https://youtrack.jetbrains.com/issue/KTIJ-19369
-    "DSL_SCOPE_VIOLATION"
-)
 plugins {
-    `java-library`
-    idea
+    id("java-library")
+    id("idea")
     alias(libs.plugins.spotless)
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 java.targetCompatibility = JavaVersion.VERSION_1_8
 
-val assetsDir = rootProject.files("assets")
+ConfigurableFileCollection assetsDir = rootProject.files("assets")
 
-sourceSets.main.configure {
+java.sourceSets.main {
     resources.srcDir(assetsDir)
 }
 
 
 spotless {
-    isEnforceCheck = false
+    enforceCheck = false
     java {
         palantirJavaFormat()
     }
 }
 
-val packTextures = tasks.register("packTextures") {
-    val inputDir = "$rootDir/assets/images/included"
-    val outputDir = "$rootDir/assets/images/packed"
+def packTextures = tasks.register("packTextures") {
+    def inputDir = "$rootDir/assets/images/included"
+    def outputDir = "$rootDir/assets/images/packed"
     inputs.dir(inputDir)
     outputs.dir(outputDir)
     doLast {
         delete(outputDir)
-        TexturePacker.process(TexturePacker.Settings().apply {
-            combineSubdirectories = true
-        }, inputDir, outputDir, "images.pack")
+        def settings = new TexturePacker.Settings()
+        settings.combineSubdirectories = true
+        TexturePacker.process(settings, inputDir, outputDir, "images.pack")
     }
 }
 

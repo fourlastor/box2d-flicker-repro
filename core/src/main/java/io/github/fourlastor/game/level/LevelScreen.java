@@ -23,7 +23,7 @@ import io.github.fourlastor.game.GdxGame;
 
 public class LevelScreen extends ScreenAdapter {
 
-    private static final float STEP = 1f / 60f;
+    private static final float STEP = 1f / 120f;
 
     private final GdxGame game;
     private final World world;
@@ -88,9 +88,9 @@ public class LevelScreen extends ScreenAdapter {
             accumulator -= STEP;
             count += 1;
         }
-        if (count != 1) {
-            System.out.printf("!!! Step ran %d times\n", count);
-        }
+//        if (count != 1) {
+//            System.out.printf("!!! Step ran %d times\n", count);
+//        }
         Vector2 position = body.getPosition();
         image.setPosition(position.x, position.y, Align.center);
         stage.act();

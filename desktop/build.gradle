@@ -1,0 +1,32 @@
+plugins {
+    id('java')
+    id('application')
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.shadow)
+}
+
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.targetCompatibility = JavaVersion.VERSION_1_8
+
+spotless {
+    enforceCheck = false
+    java {
+        palantirJavaFormat()
+    }
+}
+
+application {
+    String className = "io.github.fourlastor.game.DesktopLauncher"
+    mainClass.set(className)
+}
+
+dependencies {
+    implementation(project(":core"))
+    runtimeOnly(variantOf(libs.gdx.platform) {
+        classifier("natives-desktop")
+    })
+    runtimeOnly(variantOf(libs.gdx.box2d.platform) {
+        classifier("natives-desktop")
+    })
+    implementation(libs.gdx.backend.lwjgl3)
+}
